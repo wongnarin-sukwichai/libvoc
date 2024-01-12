@@ -38,10 +38,42 @@ class CommentController extends Controller
     public function forward(Request $request)
     {
 
-        function getDep($code) {
-            $res = Dep::find($code)->dep_title;
-            return $res;
+        /*************************************************** function ส่ง Notify ************************************************************** */
+        /*
+        function line_notify($text)
+        {
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+            date_default_timezone_set("Asia/Bangkok");
+
+            $sToken = 'FmZBskCUkntr5bmgN9bGbgolxSdwrxS0p167ElTlQ3d';
+            $sMessage = '' . $text . ' | --> https://copper.msu.ac.th/office/';
+
+            $chOne = curl_init();
+            curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
+            curl_setopt($chOne, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($chOne, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($chOne, CURLOPT_POST, 1);
+            curl_setopt($chOne, CURLOPT_POSTFIELDS, "message=" . $sMessage);
+            $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer ' . $sToken . '',);
+            curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($chOne, CURLOPT_RETURNTRANSFER, 1);
+            $result = curl_exec($chOne);
+
+            //Result error 
+            if (curl_error($chOne)) {
+                echo 'error:' . curl_error($chOne);
+            } else {
+                $result_ = json_decode($result, true);
+                echo "status : " . $result_['status'];
+                echo "message : " . $result_['message'];
+            }
+
+            curl_close($chOne);
         }
+*/
+        /*************************************************** Laravel ************************************************************** */
 
         $request->validate([
             'refID' => 'required',
@@ -49,15 +81,18 @@ class CommentController extends Controller
             'forward' => 'required',
         ]);
 
+        $dep_title = Dep::find(Auth::user()->dep)->dep_title;
+        $forward_title = Dep::find($request['forward'])->dep_title;
+
         $data = new Comment();
         $data->ref_id = $request['refID'];
         $data->name = Auth::user()->name;
         $data->surname = Auth::user()->surname;
         $data->dep = Auth::user()->dep;
-        $data->dep_title = getDep(Auth::user()->dep);
+        $data->dep_title = $dep_title;
         $data->detail = $request['detail'];
         $data->forward = $request['forward'];
-        $data->forward_title = getDep($request['forward']);
+        $data->forward_title = $forward_title;
         $data->status = 1;
 
         $data->save();
@@ -66,9 +101,105 @@ class CommentController extends Controller
         $result->stat = 3;
         $result->update();
 
-        return response()->json($data);
+        /*************************************************** Array to Send Notify ************************************************************** */
 
-        dd($data);
+        // $arr = [];
+        // $arr['name'] = showName($data->uid);
+        // $arr['type'] = showLeaveType($data->code);
+        // $arr['start'] = 'เริ่ม ' . formatThai($data->start);
+        // $arr['end'] = 'ถึง ' . formatThai($data->end);
+        // $arr['total'] = 'จำนวน ' . $data->total . ' วัน';
+        // $text = implode(" | ", $arr);
+
+        //line_notify($text);
+
+        /*************************************************** Success ************************************************************** */
+
+        return response()->json($data);
+    }
+
+    public function complete(Request $request)
+    {
+
+        /*************************************************** function ส่ง Notify ************************************************************** */
+        /*
+        function line_notify($text)
+        {
+            ini_set('display_errors', 1);
+            ini_set('display_startup_errors', 1);
+            error_reporting(E_ALL);
+            date_default_timezone_set("Asia/Bangkok");
+
+            $sToken = 'FmZBskCUkntr5bmgN9bGbgolxSdwrxS0p167ElTlQ3d';
+            $sMessage = '' . $text . ' | --> https://copper.msu.ac.th/office/';
+
+            $chOne = curl_init();
+            curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
+            curl_setopt($chOne, CURLOPT_SSL_VERIFYHOST, 0);
+            curl_setopt($chOne, CURLOPT_SSL_VERIFYPEER, 0);
+            curl_setopt($chOne, CURLOPT_POST, 1);
+            curl_setopt($chOne, CURLOPT_POSTFIELDS, "message=" . $sMessage);
+            $headers = array('Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer ' . $sToken . '',);
+            curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers);
+            curl_setopt($chOne, CURLOPT_RETURNTRANSFER, 1);
+            $result = curl_exec($chOne);
+
+            //Result error 
+            if (curl_error($chOne)) {
+                echo 'error:' . curl_error($chOne);
+            } else {
+                $result_ = json_decode($result, true);
+                echo "status : " . $result_['status'];
+                echo "message : " . $result_['message'];
+            }
+
+            curl_close($chOne);
+        }
+*/
+        /*************************************************** Laravel ************************************************************** */
+
+        $request->validate([
+            'refID' => 'required',
+            'detail' => 'required',
+            'forward' => 'required',
+        ]);
+
+        $dep_title = Dep::find(Auth::user()->dep)->dep_title;
+        $forward_title = Dep::find($request['forward'])->dep_title;
+
+
+        $data = new Comment();
+        $data->ref_id = $request['refID'];
+        $data->name = Auth::user()->name;
+        $data->surname = Auth::user()->surname;
+        $data->dep = Auth::user()->dep;
+        $data->dep_title = $dep_title;
+        $data->detail = $request['detail'];
+        $data->forward = $request['forward'];
+        $data->forward_title = $forward_title;
+        $data->status = 2;
+
+        $data->save();
+
+        $result = Post::find($request['refID']);
+        $result->stat = 4;
+        $result->update();
+
+         /*************************************************** Array to Send Notify ************************************************************** */
+
+        // $arr = [];
+        // $arr['name'] = showName($data->uid);
+        // $arr['type'] = showLeaveType($data->code);
+        // $arr['start'] = 'เริ่ม ' . formatThai($data->start);
+        // $arr['end'] = 'ถึง ' . formatThai($data->end);
+        // $arr['total'] = 'จำนวน ' . $data->total . ' วัน';
+        // $text = implode(" | ", $arr);
+
+        //line_notify($text);
+
+        /*************************************************** Success ************************************************************** */
+
+        return response()->json($data);
     }
 
     /**

@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\StatController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CommentController;
+use App\Http\Controllers\Api\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,5 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user', UserController::class);
     Route::post('forward', [CommentController::class, 'forward']);
     Route::post('complete', [CommentController::class, 'complete']);
+    Route::get('upPost/{id}/{code}', [AdminController::class, 'upPost']);
+    Route::resource('admin', AdminController::class);
 });
 

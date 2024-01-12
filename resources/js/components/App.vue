@@ -96,7 +96,7 @@
                                     >
                                         <!-- Active: "bg-gray-100", Not Active: "" -->
                                         <router-link
-                                            to="home"
+                                            to="../home"
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200"
                                             role="menuitem"
                                             tabindex="-1"
@@ -215,7 +215,7 @@
         </nav>
         <!-- Replace with your content -->
         <main>
-            <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8" v-if="!user">
+            <div class="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">
                 <img :src="banner" class="p-2 shadow-lg" />
             </div>
 
@@ -228,7 +228,7 @@
             </router-view>
 
             <footer
-                class="footer footer-center text-base-content border-t fixed h-auto bottom-0 w-screen bg-gray-800 text-white"
+                class="footer footer-center text-base-content border-t h-auto bottom-0 w-screen bg-gray-800 text-white mt-10"
             >
                 <div class="py-4 text-sm text-center dark:text-gray-400">
                     ©2023 Academic Resource Center MSU

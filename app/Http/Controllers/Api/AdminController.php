@@ -3,17 +3,18 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Post;
 use Illuminate\Http\Request;
 
-class PostController extends Controller
+use App\Models\Post;
+
+class AdminController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $data = Post::where('public', 1)->orderby('id', 'DESC')->paginate(5);
+        $data = Post::orderby('id', 'DESC')->paginate(5);
 
         return response()->json($data);
     }
@@ -31,29 +32,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'lastname' => 'required',
-            'type' => 'required',
-            'concern' => 'required',
-            'detail' => 'required'
-        ]);
-
-        $data = new Post();
-        $data->name = $request['name'];
-        $data->lastname = $request['lastname'];
-        if (!empty($request['email'])) {
-            $data->email = $request['email'];
-        }
-        $data->type = $request['type'];
-        $data->concern = $request['concern'];
-        $data->detail = $request['detail'];
-        $data->stat = 1;
-        $data->public = 0;
-
-        $data->save();
-
-        return response()->json($data);
+        //
     }
 
     /**
@@ -61,9 +40,7 @@ class PostController extends Controller
      */
     public function show(string $id)
     {
-        $data = Post::find($id);
-
-        return response()->json($data);
+        //
     }
 
     /**
@@ -80,6 +57,16 @@ class PostController extends Controller
     public function update(Request $request, string $id)
     {
         //
+    }
+
+    public function upPost(string $id, string $code)
+    {
+        $data = Post::find($id);
+        $data->public = $code;
+
+        $data->update();
+
+        return response()->json($data);
     }
 
     /**

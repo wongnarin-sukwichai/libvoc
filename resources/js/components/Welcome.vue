@@ -63,7 +63,7 @@
                     class="divide-y divide-gray-100 border-t border-gray-100"
                 >
                     <tr
-                        class="hover:bg-gray-50 cursor-pointer"
+                        class="hover:bg-sky-50 cursor-pointer"
                         v-for="(post, index) in postList.data"
                         :key="index"
                         @click="getDetail(post.id)"
@@ -77,7 +77,7 @@
                                     {{ post.name }} ****
                                 </div>
                                 <div class="text-gray-400">
-                                    {{ post.email }}
+                                    {{ post.email.substring(0,3) }}****
                                 </div>
                             </div>
                         </th>
@@ -289,10 +289,10 @@
                                             <label
                                                 for="email"
                                                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                                                >Email</label
+                                                >ข้อมูลติดต่อ</label
                                             >
                                             <input
-                                                type="email"
+                                                type="text"
                                                 id="email"
                                                 class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                                                 placeholder="** เว้นว่างได้ **"
@@ -425,14 +425,14 @@ export default {
         async sendPost() {
             try {
                 await this.$store.dispatch("storePost", this.dataPost);
-                Swal.fire({
-                    position: "top-end",
-                    icon: "success",
+                this.isModalShow = false;
+                await Swal.fire({
                     title: "บันทึกข้อมูลเรียบร้อย",
-                    showConfirmButton: false,
-                    timer: 1500,
+                    text: "เนื้อหาของท่านอยู่ในขั้นตอนรอการตรวจสอบความเหมาะสมจากทางเจ้าหน้าที ขอบคุณครับ/ค่ะ",
+                    icon: "success",
+                    timer: 5000,
                 });
-                await window.location.reload();
+                window.location.reload();
             } catch (err) {
                 Swal.fire({
                     icon: "error",

@@ -57,30 +57,31 @@
                         >
                             สถานะ
                         </th>
+                        <th
+                            scope="col"
+                            class="px-6 py-4 font-medium text-gray-900"
+                        >
+                            เผยแพร่
+                        </th>
                     </tr>
                 </thead>
                 <tbody
                     class="divide-y divide-gray-100 border-t border-gray-100"
                 >
-                    <tr
-                        class="hover:bg-gray-50 cursor-pointer"
-                        v-for="(post, index) in postList.data"
-                        :key="index"
-                        @click="getDetail(post.id)"
-                    >
+                    <tr v-for="(post, index) in postList.data" :key="index">
                         <td class="px-6 py-4">{{ post.id }}</td>
-                        <th
+                        <td
                             class="flex gap-3 px-6 py-4 font-normal text-gray-900"
                         >
                             <div class="text-sm">
                                 <div class="font-medium text-gray-700">
-                                    {{ post.name }} ****
+                                    {{ post.name }} {{ post.lastname }}
                                 </div>
                                 <div class="text-gray-400">
                                     {{ post.email }}
                                 </div>
                             </div>
-                        </th>
+                        </td>
                         <td class="px-6 py-4">
                             {{ momentDate(post.created_at) }}
                         </td>
@@ -93,7 +94,10 @@
                         <td class="px-6 py-4">
                             {{ showConcern(post.concern) }}
                         </td>
-                        <td class="px-6 py-4">
+                        <td
+                            class="px-6 py-4 hover:bg-sky-50 cursor-pointer"
+                            @click="getDetail(post.id)"
+                        >
                             {{ post.detail }}
                         </td>
                         <td class="px-6 py-4">
@@ -111,6 +115,24 @@
                                 {{ showStat(post.stat) }}
                             </p>
                         </td>
+                        <td class="px-6 py-4">
+                            <box-icon
+                                v-if="post.public === 0"
+                                name="block"
+                                color="#ef4444"
+                                class="cursor-pointer"
+                                animation="tada-hover"
+                                @click.self="upPost(post.id, 1)"
+                            ></box-icon>
+                            <box-icon
+                                v-else
+                                name="check-circle"
+                                color="#84cc16"
+                                class="cursor-pointer"
+                                animation="tada-hover"
+                                @click="upPost(post.id, 0)"
+                            ></box-icon>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -123,7 +145,6 @@
             >
             </TailwindPagination>
         </div>
-
     </div>
 </template>
 
@@ -133,9 +154,10 @@ import moment from "moment";
 import "moment/dist/locale/th";
 moment.locale("th");
 import { TailwindPagination } from "laravel-vue-pagination";
+import Swal from "sweetalert2";
 
 export default {
-    mounted(){
+    mounted() {
         this.getType();
         this.getConcern();
         this.getPost();
@@ -147,7 +169,7 @@ export default {
             concernList: "",
             postList: [],
             statList: "",
-        }
+        };
     },
     methods: {
         getType() {
@@ -172,7 +194,7 @@ export default {
         },
         getPost(page = 1) {
             axios
-                .get("/api/post?page=" + page)
+                .get("/api/admin?page=" + page)
                 .then((response) => {
                     this.postList = response.data;
                 })
@@ -185,6 +207,23 @@ export default {
                 .get("/api/stat")
                 .then((response) => {
                     this.statList = response.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
+        async upPost(id, code) {
+            axios
+                .get("/api/upPost/" + id + "/" + code)
+                .then((response) => {
+                    this.getPost();
+                    Swal.fire({
+                    position: "top-end",
+                    icon: "success",
+                    title: "บันทึกข้อมูลเรียบร้อย",
+                    showConfirmButton: false,
+                    timer: 1500,
+                });
                 })
                 .catch((err) => {
                     console.log(err);

@@ -7,7 +7,7 @@ import Login from "../components/Login.vue";
 import Detail from "../components/Detail.vue";
 import Home from "../components/Home.vue";
 import Dashboard from "../components/Dashboard.vue";
-import AdminDetail from "../components/adminDetail.vue";
+import AdminDetail from "../components/AdminDetail.vue";
 
 import store from "../store";
 

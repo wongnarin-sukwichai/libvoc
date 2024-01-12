@@ -1,3 +1,4 @@
+import axios from "axios";
 
 export default {
     //สร้างตัวแปรนั่นแหละ
@@ -7,10 +8,15 @@ export default {
         };
     },
     getters: {
-
+        comment(state) {
+            return state.comment;
+        },
     },
     mutations: {
 
+        setComment(state, payload) {
+            state.comment = payload;
+        },
     },
     actions: {
        
@@ -50,7 +56,6 @@ export default {
             } catch (e) {
                 throw e;
             }
-        },
-
+        }, 
     },
 };

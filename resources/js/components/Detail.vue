@@ -15,7 +15,7 @@
     </div>
 
     <!-- Post -->
-    <div class="flex justify-center mb-20 mt-8">
+    <div class="flex justify-center mb-48 mt-8">
         <div class="">
             <div class="flex">
                 <div class="flex flex-col items-center mr-4">
@@ -36,7 +36,7 @@
                         {{ momentDate(postDetail.created_at) }}
                     </p>
                     <div
-                        class="block p-6 border-2 border-green-300 rounded-lg shadow-lg max-w-md"
+                        class="block p-6 border-2 border-sky-300 rounded-lg shadow-lg max-w-md"
                     >
                         <p class="text-gray-700 mb-6 text-lg">
                             {{ postDetail.detail }}
@@ -86,7 +86,8 @@
                         <div class="w-px h-full bg-gray-300"></div>
                     </div>
                     <div
-                        class="block p-6 mt-6 rounded-lg shadow-lg max-w-md border-2 border-orange-300"
+                        class="block p-6 mt-6 rounded-lg shadow-lg max-w-md border-2"
+                        :class="comment.status !== 2 ? 'border-orange-300' : 'border-green-300'"
                     >
                         <p class="text-gray-700 mb-6 text-lg">
                             {{ comment.detail }}
@@ -126,8 +127,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="pt-1">
-                    <p class="mb-2 text-lg font-bold text-gray-600">
+                <div class="pt-4">
+                    <p class="mb-2 text-lg font-semibold text-gray-600">
                         ดำเนินการเสร็จสิ้น
                     </p>
                 </div>
