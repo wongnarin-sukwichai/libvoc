@@ -167,13 +167,13 @@
                                             <div>
                                                 <label
                                                     for="first_name"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    class="block mb-2 text-sm font-medium text-gray-900"
                                                     >ชื่อ</label
                                                 >
                                                 <input
                                                     type="text"
                                                     id="first_name"
-                                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-1 focus:border-sky-500 block w-full p-2.5"
                                                     required
                                                     v-model="dataPost.name"
                                                 />
@@ -181,13 +181,13 @@
                                             <div>
                                                 <label
                                                     for="last_name"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    class="block mb-2 text-sm font-medium text-gray-900"
                                                     >นามสกุล</label
                                                 >
                                                 <input
                                                     type="text"
                                                     id="last_name"
-                                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                    class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-1 focus:border-sky-500 block w-full p-2.5 "
                                                     required
                                                     v-model="dataPost.lastname"
                                                 />
@@ -196,12 +196,12 @@
                                             <div>
                                                 <label
                                                     for="company"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    class="block mb-2 text-sm font-medium text-gray-900"
                                                     >ประเภท</label
                                                 >
                                                 <div class="relative">
                                                     <select
-                                                        class="text-sm p-3 cursor-pointer block appearance-none w-full bg-white border border-gray-200 text-gray-700 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        class="text-sm p-3 cursor-pointer block appearance-none w-full bg-white border border-gray-200 text-gray-700 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-sky-500"
                                                         required
                                                         v-model="dataPost.type"
                                                     >
@@ -241,13 +241,13 @@
                                             <div>
                                                 <label
                                                     for="phone"
-                                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                    class="block mb-2 text-sm font-medium text-gray-900"
                                                 >
                                                     หมวดหมู่</label
                                                 >
                                                 <div class="relative">
                                                     <select
-                                                        class="text-sm p-3 cursor-pointer block appearance-none w-full bg-white border border-gray-200 text-gray-700 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                                        class="text-sm p-3 cursor-pointer block appearance-none w-full bg-white border border-gray-200 text-gray-700 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-sky-500"
                                                         required
                                                         v-model="
                                                             dataPost.concern
@@ -290,13 +290,13 @@
                                         <div class="mb-6">
                                             <label
                                                 for="email"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                class="block mb-2 text-sm font-medium text-gray-900"
                                                 >ข้อมูลติดต่อ</label
                                             >
                                             <input
                                                 type="text"
                                                 id="email"
-                                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                                class="border border-gray-300 text-gray-900 text-sm rounded-lg focus:outline-none focus:ring-1 focus:border-sky-500 block w-full p-2.5 "
                                                 placeholder="** เว้นว่างได้ **"
                                                 v-model="dataPost.email"
                                             />
@@ -304,11 +304,11 @@
                                         <div class="mb-6">
                                             <label
                                                 for="confirm_password"
-                                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                                                class="block mb-2 text-sm font-medium text-gray-900"
                                                 >รายละเอียด</label
                                             >
                                             <textarea
-                                                class="w-full border border-gray-300 rounded-lg p-2"
+                                                class="w-full border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-1 focus:border-sky-500"
                                                 v-model="dataPost.detail"
                                                 required
                                             ></textarea>
