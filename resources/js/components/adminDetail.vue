@@ -86,7 +86,11 @@
                     </div>
                     <div
                         class="block p-6 mt-6 rounded-lg shadow-lg max-w-md border-2"
-                        :class="comment.status !== 2 ? 'border-orange-300' : 'border-green-300'"
+                        :class="
+                            comment.status !== 2
+                                ? 'border-orange-300'
+                                : 'border-green-300'
+                        "
                     >
                         <p class="text-gray-700 mb-6 text-lg">
                             {{ comment.detail }}
@@ -209,6 +213,14 @@
                                         required
                                         v-model="dataComment.detail"
                                     ></textarea>
+                                    <transition name="fade" mode="out-in">
+                                        <p
+                                            class="flex justify-end text-rose-500 text-sm pt-1"
+                                            v-show="errDetail"
+                                        >
+                                            ** กรุณาใส่ข้อมูลรายละเอียด
+                                        </p>
+                                    </transition>
                                 </div>
                             </div>
                         </div>
@@ -247,6 +259,14 @@
                                     </select>
                                 </div>
                             </div>
+                            <transition name="fade" mode="out-in">
+                                <p
+                                    class="flex justify-end text-rose-500 text-sm pt-1"
+                                    v-show="errForward"
+                                >
+                                    ** กรุณาเลือกกลุ่มงาน
+                                </p>
+                            </transition>
                         </div>
 
                         <div
@@ -297,6 +317,8 @@ export default {
     data() {
         return {
             isModalShow: false,
+            errDetail: false,
+            errForward: false,
             id: this.$route.params.id,
             postDetail: "",
             commentList: "",
@@ -332,70 +354,97 @@ export default {
             });
         },
         async sendForward() {
-            Swal.fire({
-                title: "ส่งมอบเรื่องไปยังกลุ่มงาน",
-                text: "ยืนยันการส่งมอบหรือไม่?",
-                icon: "question",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    try {
-                        this.$store.dispatch("storeForward", this.dataComment);
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: "บันทึกข้อมูลเรียบร้อย",
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                        this.closeDetail();
-                        this.$router.push({ name: "home" });
-                    } catch (err) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "ผิดพลาด",
-                            text: "ไม่สามารถบันทึกข้อมูลได้, กรุณาติดต่อเจ้าหน้าที่",
-                            timer: 1500,
-                        });
+            if (this.dataComment.detail == "") {
+                this.errDetail = true;
+            } else if (this.dataComment.forward == "") {
+                this.errForward = true;
+            } else {
+                Swal.fire({
+                    title: "ส่งมอบเรื่องไปยังกลุ่มงาน",
+                    text: "ยืนยันการส่งมอบหรือไม่?",
+                    icon: "question",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            axios
+                                .post("/api/forward", this.dataComment) //ไปที่ routes->api->login
+                                .then((response) => {
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "บันทึกข้อมูลเรียบร้อย",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                    });
+                                    this.getComment();
+                                    this.closeDetail();
+                                    this.errDetail = false;
+                                    this.errForward = false;
+                                })
+                                .catch((err) => {
+                                    throw err.response;
+                                });
+                        } catch (err) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "ผิดพลาด",
+                                text: "ไม่สามารถบันทึกข้อมูลได้, กรุณาติดต่อเจ้าหน้าที่",
+                                timer: 1500,
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         },
         async sendComplete() {
-            Swal.fire({
-                title: "ดำเนินการแล้วเสร็จ",
-                text: "ยืนยันการดำเนินการแล้วเสร็จหรือไม่?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Yes",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    try {
-                        this.$store.dispatch("storeComplete", this.dataComment);             
-                        Swal.fire({
-                            position: "top-end",
-                            icon: "success",
-                            title: "บันทึกข้อมูลเรียบร้อย",
-                            showConfirmButton: false,
-                            timer: 1500,
-                        });
-                        this.closeDetail();
-                        this.$router.push({ name: "home" });
-                    } catch (err) {
-                        Swal.fire({
-                            icon: "error",
-                            title: "ผิดพลาด",
-                            text: "ไม่สามารถบันทึกข้อมูลได้, กรุณาติดต่อเจ้าหน้าที่",
-                            timer: 1500,
-                        });
+            if (this.dataComment.detail == "") {
+                this.errDetail = true;
+            } else {
+                Swal.fire({
+                    title: "ดำเนินการแล้วเสร็จ",
+                    text: "ยืนยันการดำเนินการแล้วเสร็จหรือไม่?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Yes",
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            axios
+                                .post("/api/complete", this.dataComment) //ไปที่ routes->api->login
+                                .then((response) => {
+                                    Swal.fire({
+                                        position: "top-end",
+                                        icon: "success",
+                                        title: "บันทึกข้อมูลเรียบร้อย",
+                                        showConfirmButton: false,
+                                        timer: 1500,
+                                    });
+                                    this.getPost();
+                                    this.getComment();
+                                    this.closeDetail();
+                                    this.errDetail = false;
+                                    this.errForward = false;
+                                })
+                                .catch((err) => {
+                                    throw err.response;
+                                });
+                        } catch (err) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "ผิดพลาด",
+                                text: "ไม่สามารถบันทึกข้อมูลได้, กรุณาติดต่อเจ้าหน้าที่",
+                                timer: 1500,
+                            });
+                        }
                     }
-                }
-            });
+                });
+            }
         },
         momentDate(data) {
             return moment(data).add(543, "years").format("LL");

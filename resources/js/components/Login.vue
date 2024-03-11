@@ -74,7 +74,7 @@ export default {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: "บันทึกข้อมูลเรียบร้อย",
+                    title: "เข้าสู่ระบบเรียบร้อย",
                     showConfirmButton: false,
                     timer: 1500,
                 });

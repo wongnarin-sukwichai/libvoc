@@ -2,7 +2,7 @@
     <div class="mx-auto sm:px-6 lg:px-8">
         <!-- component -->
         <div
-            class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5"
+            class="overflow-auto rounded-lg border border-gray-200 shadow-md m-5"
         >
             <table
                 class="w-full border-collapse bg-white text-left text-sm text-gray-500"

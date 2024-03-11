@@ -39,7 +39,7 @@ class CommentController extends Controller
     {
 
         /*************************************************** function ส่ง Notify ************************************************************** */
-        /*
+        
         function line_notify($text)
         {
             ini_set('display_errors', 1);
@@ -48,7 +48,7 @@ class CommentController extends Controller
             date_default_timezone_set("Asia/Bangkok");
 
             $sToken = 'FmZBskCUkntr5bmgN9bGbgolxSdwrxS0p167ElTlQ3d';
-            $sMessage = '' . $text . ' | --> https://copper.msu.ac.th/office/';
+            $sMessage = 'ระบบแจ้งเตือน : ส่งต่อข้อร้องเรียนไปยังกลุ่มงาน --> ' . $text . ' | http:202.28.32.106:8081';
 
             $chOne = curl_init();
             curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
@@ -72,7 +72,7 @@ class CommentController extends Controller
 
             curl_close($chOne);
         }
-*/
+
         /*************************************************** Laravel ************************************************************** */
 
         $request->validate([
@@ -81,6 +81,7 @@ class CommentController extends Controller
             'forward' => 'required',
         ]);
 
+        $res = Post::find($request['refID'])->detail;
         $dep_title = Dep::find(Auth::user()->dep)->dep_title;
         $forward_title = Dep::find($request['forward'])->dep_title;
 
@@ -103,15 +104,12 @@ class CommentController extends Controller
 
         /*************************************************** Array to Send Notify ************************************************************** */
 
-        // $arr = [];
-        // $arr['name'] = showName($data->uid);
-        // $arr['type'] = showLeaveType($data->code);
-        // $arr['start'] = 'เริ่ม ' . formatThai($data->start);
-        // $arr['end'] = 'ถึง ' . formatThai($data->end);
-        // $arr['total'] = 'จำนวน ' . $data->total . ' วัน';
-        // $text = implode(" | ", $arr);
+        $arr = [];
+        $arr['dep'] = $dep_title;
+        $arr['title'] = "เรื่อง '" . $res . "'";
+        $text = implode(" | ", $arr);
 
-        //line_notify($text);
+        line_notify($text);
 
         /*************************************************** Success ************************************************************** */
 
@@ -161,12 +159,10 @@ class CommentController extends Controller
         $request->validate([
             'refID' => 'required',
             'detail' => 'required',
-            'forward' => 'required',
         ]);
 
         $dep_title = Dep::find(Auth::user()->dep)->dep_title;
-        $forward_title = Dep::find($request['forward'])->dep_title;
-
+        // $forward_title = Dep::find($request['forward'])->dep_title;
 
         $data = new Comment();
         $data->ref_id = $request['refID'];
@@ -175,8 +171,8 @@ class CommentController extends Controller
         $data->dep = Auth::user()->dep;
         $data->dep_title = $dep_title;
         $data->detail = $request['detail'];
-        $data->forward = $request['forward'];
-        $data->forward_title = $forward_title;
+        // $data->forward = $request['forward'];
+        // $data->forward_title = $forward_title;
         $data->status = 2;
 
         $data->save();

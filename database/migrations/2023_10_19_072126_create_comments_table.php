@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('dep_title');
             $table->string('detail')->nullable();
             $table->integer('forward')->nullable();
-            $table->string('forward_title');
+            $table->string('forward_title')->nullable();
             $table->integer('stat')->comment('1=ส่งต่อกลุ่มงาน,2=ดำเินการเสร็จสิ้น');
             $table->timestamps();
         });

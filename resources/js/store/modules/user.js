@@ -1,5 +1,3 @@
-
-
 /** หน้าที่หลักๆของ Vuex คือการดึงข้อมูลจาก database จากนั้นเราก็นำข้อมูลที่ได้นั้นมาเตรียมข้อมูลไว้่ เพื่อให้เราสะดวกในการนำไปแสดงที่หน้าเว็บไซต์ผ่าน computed อีกที */
 
 export default {
@@ -30,9 +28,11 @@ export default {
     },
     mutations: {
         //mutaion รับค่าจาก action ผ่านคำสั่ง commit แล้วนำมาเปลี่ยนแปลงข้อมูลใน state (ด้านบน)
-
         setUser(state, payload) {
             state.user = payload;
+        },
+        setAuthen(state, payload) {
+            state.authenticated = payload;
         },
     },
     actions: {
@@ -55,7 +55,7 @@ export default {
             } catch (e) {
                 throw e;
             }
-        },     
+        },
 
         async logout({ commit }) {
             await axios.get("/sanctum/csrf-cookie");
@@ -64,6 +64,7 @@ export default {
                 .then((response) => {
                     // console.log(response)
                     commit("setUser", null);
+                    commit("setAuthen", false);
                 })
                 .catch((err) => {
                     // console.log("ERROR::",err.response.headers)

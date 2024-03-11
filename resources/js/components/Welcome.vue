@@ -2,7 +2,7 @@
     <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
         <!-- component -->
         <div
-            class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5"
+            class="overflow-auto rounded-lg border border-gray-200 shadow-md m-5"
         >
             <table
                 class="w-full border-collapse bg-white text-left text-sm text-gray-500"
@@ -76,7 +76,9 @@
                                 <div class="font-medium text-gray-700">
                                     {{ post.name }} ****
                                 </div>
-                                <div class="text-gray-400">
+                                <div class="text-gray-400"
+                                v-if="post.email !== null"
+                                >
                                     {{ post.email.substring(0,3) }}****
                                 </div>
                             </div>
@@ -430,9 +432,9 @@ export default {
                     title: "บันทึกข้อมูลเรียบร้อย",
                     text: "เนื้อหาของท่านอยู่ในขั้นตอนรอการตรวจสอบความเหมาะสมจากทางเจ้าหน้าที ขอบคุณครับ/ค่ะ",
                     icon: "success",
-                    timer: 5000,
+                    timer: 10000,
                 });
-                window.location.reload();
+                this.getPost();
             } catch (err) {
                 Swal.fire({
                     icon: "error",

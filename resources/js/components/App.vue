@@ -184,7 +184,9 @@
                         >แนวปฎิบัติที่ดี</router-link
                     >
                 </div>
-                <div class="border-t border-gray-700 pb-3 pt-4">
+                <div class="border-t border-gray-700 pb-3 pt-4"
+                v-if="user"
+                >
                     <div class="flex items-center px-5">
                         <div class="flex-shrink-0">
                             <box-icon name="user" color="white"></box-icon>
@@ -231,7 +233,7 @@
                 class="footer footer-center text-base-content border-t h-auto bottom-0 w-screen bg-gray-800 text-white mt-10"
             >
                 <div class="py-4 text-sm text-center dark:text-gray-400">
-                    ©2023 Academic Resource Center MSU
+                    ©2024 Academic Resource Center MSU
                 </div>
             </footer>
         </main>
