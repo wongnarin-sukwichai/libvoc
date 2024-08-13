@@ -64,7 +64,7 @@
                         </h2>
                         <div class="flex flex-col space-y-1">
                             <a
-                                href=""
+                                href="#"
                                 class="flex p-2 rounded-lg hover:bg-gray-100 hover:text-gray-700"
                                 @click="logout()"
                                 ><box-icon
