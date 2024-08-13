@@ -58,8 +58,10 @@
                                 color="#9ca3af"
                             ></box-icon>
                         </div>
-                        <font class="italic font-xs text-gray-300 justify-end">
-                            {{ postDetail.email }}
+                        <font class="italic font-xs text-gray-300 justify-end"
+                        v-if="postDetail.email !== null"
+                        >
+                            {{ postDetail.email }}**** 
                         </font>
                     </div>
                 </div>
@@ -162,6 +164,7 @@ export default {
         getPost() {
             axios.get("/api/post/" + this.id).then((response) => {
                 this.postDetail = response.data;
+                this.postDetail.email = this.postDetail.email.substring(0,3);
             });
         },
         getComment() {
@@ -180,6 +183,7 @@ export default {
         momentTime(data) {
             return moment(data).format("LT");
         },
+
     },
 };
 </script>
