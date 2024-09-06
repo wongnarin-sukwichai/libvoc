@@ -11,6 +11,8 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\StaffController;
+use App\Http\Controllers\Api\ApiController;
 
 /*
 |--------------------------------------------------------------------------
@@ -42,5 +44,11 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('complete', [CommentController::class, 'complete']);
     Route::get('upPost/{id}/{code}', [AdminController::class, 'upPost']);
     Route::resource('admin', AdminController::class);
+    Route::resource('staff', StaffController::class);
+
+    Route::get('getPost', [ApiController::class, 'getPost']);
+    Route::get('getConcern', [ApiController::class, 'getConcern']);
+    Route::get('getType', [ApiController::class, 'getType']);
 });
+
 

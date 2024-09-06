@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto sm:px-6 lg:px-8">
+    <div class="mx-auto px-2">
         <!-- component -->
         <div
             class="overflow-auto rounded-lg border border-gray-200 shadow-md m-5"
@@ -61,6 +61,12 @@
                             scope="col"
                             class="px-6 py-4 font-medium text-gray-900"
                         >
+                            กลุ่มงาน
+                        </th>
+                        <th
+                            scope="col"
+                            class="px-6 py-4 font-medium text-gray-900"
+                        >
                             เผยแพร่
                         </th>
                     </tr>
@@ -99,7 +105,7 @@
                             @click="getDetail(post.id)"
                         >
                             {{ post.detail }}
-                        </td>
+                        </td>                 
                         <td class="px-6 py-4">
                             <p
                                 :class="
@@ -113,6 +119,11 @@
                                 "
                             >
                                 {{ showStat(post.stat) }}
+                            </p>
+                        </td>
+                        <td class="px-6 py-4">
+                            <p v-if="post.forward_dep !== null">
+                                {{ showDep(post.forward_dep) }}
                             </p>
                         </td>
                         <td class="px-6 py-4">
@@ -162,6 +173,7 @@ export default {
         this.getConcern();
         this.getPost();
         this.getStat();
+        this.getDep();
     },
     data() {
         return {
@@ -169,6 +181,7 @@ export default {
             concernList: "",
             postList: [],
             statList: "",
+            depList: "",
         };
     },
     methods: {
@@ -193,14 +206,27 @@ export default {
                 });
         },
         getPost(page = 1) {
-            axios
-                .get("/api/admin?page=" + page)
-                .then((response) => {
-                    this.postList = response.data;
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
+            var chk = this.$store.getters.userSystem;
+
+            if (chk == 1) {
+                axios
+                    .get("/api/admin?page=" + page)
+                    .then((response) => {
+                        this.postList = response.data;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            } else {
+                axios
+                    .get("/api/staff?page=" + page)
+                    .then((response) => {
+                        this.postList = response.data;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            }
         },
         getStat() {
             axios
@@ -212,18 +238,28 @@ export default {
                     console.log(err);
                 });
         },
+        getDep() {
+            axios
+                .get("/api/dep")
+                .then((response) => {
+                    this.depList = response.data;
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        },
         async upPost(id, code) {
             axios
                 .get("/api/upPost/" + id + "/" + code)
                 .then((response) => {
                     this.getPost();
                     Swal.fire({
-                    position: "top-end",
-                    icon: "success",
-                    title: "บันทึกข้อมูลเรียบร้อย",
-                    showConfirmButton: false,
-                    timer: 1500,
-                });
+                        position: "top-end",
+                        icon: "success",
+                        title: "บันทึกข้อมูลเรียบร้อย",
+                        showConfirmButton: false,
+                        timer: 1500,
+                    });
                 })
                 .catch((err) => {
                     console.log(err);
@@ -246,6 +282,13 @@ export default {
         },
         showStat(data) {
             return this.statList[data - 1].stat_title;
+        },
+        showDep(data) {
+            var res = this.depList.filter(
+                (selection) => selection["id"] == data
+            );
+
+            return res[0].dep_title;
         },
     },
     components: {

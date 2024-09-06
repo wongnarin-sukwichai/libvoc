@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\User;
+
 class AuthController extends Controller
 {
 
@@ -19,8 +21,13 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
+            $user = User::where('email', $credentials['email'])->first();               //ดึงข้อมูลผู้ทำการ login
+            $user->tokens()->delete();                                                  //ลบข้อมูลเดิมออกก่อน
+            $token = $user->createToken($request['email']);                             //สร้าง token ขึ้นมาใหม่เก็บไว้ใน table personal_access_tokens
+
             return response()->json([
-                'message' => 'Login Success!'
+                'message' => 'Login Success!',
+                'token' => $token->plainTextToken                                       //ส่งค่ากลับคืนไป โดยค่านี้จะถูกเข้ารหัส
             ]);
         } else {
             return response()->json([

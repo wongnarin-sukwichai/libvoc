@@ -18,6 +18,10 @@ Route::get('symlink', function () {
     echo 'OK';
 });
 
+Route::get('fail', function () {
+    abort(401);
+})->name('fail');
+
 Route::get('{any}', function () {
     return view('welcome');
 })->where('any', '.*');

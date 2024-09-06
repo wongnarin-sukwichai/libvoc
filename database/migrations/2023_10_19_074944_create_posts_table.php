@@ -21,6 +21,7 @@ return new class extends Migration
             $table->longText('detail');
             $table->integer('stat')->comment('1=ส่งต่อ,2=เสร็จสิ้น');
             $table->integer('public')->nullable()->comment('1=เผยแพร่');
+            $table->integer('forward_dep')->nullable()->comment('หน่วยงานใดกำลังรับผิดชอบในเรื่องนี้');
             $table->timestamps();
         });
     }

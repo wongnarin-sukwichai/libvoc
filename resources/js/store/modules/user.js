@@ -22,7 +22,7 @@ export default {
         authEmail(state) {
             return state.user.email;
         },
-        getRules(state) {
+        userSystem(state) {
             return state.user.system;
         },
     },

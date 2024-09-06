@@ -48,7 +48,7 @@ class CommentController extends Controller
             date_default_timezone_set("Asia/Bangkok");
 
             $sToken = 'FmZBskCUkntr5bmgN9bGbgolxSdwrxS0p167ElTlQ3d';
-            $sMessage = 'ระบบแจ้งเตือน : ส่งต่อข้อร้องเรียนไปยังกลุ่มงาน --> ' . $text . ' | http:202.28.32.106:8081';
+            $sMessage = 'ระบบแจ้งเตือน : ส่งต่อข้อร้องเรียนไปยังกลุ่มงาน --> ' . $text . ' | https://libvoc.msu.ac.th';
 
             $chOne = curl_init();
             curl_setopt($chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify");
@@ -100,6 +100,7 @@ class CommentController extends Controller
 
         $result = Post::find($request['refID']);
         $result->stat = 3;
+        $result->forward_dep = $request['forward'];
         $result->update();
 
         /*************************************************** Array to Send Notify ************************************************************** */

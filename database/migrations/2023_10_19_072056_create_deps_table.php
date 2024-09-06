@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('dep_title');
             $table->integer('dep_group');
-            $table->string('user_1')->nullable();
-            $table->string('user_2')->nullable();
             $table->timestamps();
         });
     }
