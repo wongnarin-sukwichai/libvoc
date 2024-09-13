@@ -8,6 +8,7 @@ import Detail from "../components/Detail.vue";
 import Home from "../components/Home.vue";
 import Dashboard from "../components/Dashboard.vue";
 import AdminDetail from "../components/AdminDetail.vue";
+import Stat from "../components/Stat.vue";
 
 import store from "../store";
 
@@ -57,9 +58,17 @@ const routes = [
                 }
             },
             {
-                path: "/adminDetail/:id",
-                name: "adminDetail",
+                path: "/AdminDetail/:id",
+                name: "AdminDetail",
                 component: AdminDetail,
+                meta: {
+                    guard: "auth"
+                }
+            },
+            {
+                path: "/stat",
+                name: "stat",
+                component: Stat,
                 meta: {
                     guard: "auth"
                 }

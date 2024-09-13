@@ -266,7 +266,7 @@ export default {
                 });
         },
         getDetail(id) {
-            this.$router.push("/adminDetail/" + id);
+            this.$router.push("/AdminDetail/" + id);
         },
         momentDate(data) {
             return moment(data).add(543, "years").format("LL");
