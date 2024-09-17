@@ -50,7 +50,7 @@ class PostController extends Controller
         $data->detail = $request['detail'];
         $data->stat = 1;
         $data->public = 0;
-        $data->forward = null;
+        $data->forward_dep = null;
 
         $data->save();
 
