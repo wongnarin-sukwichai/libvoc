@@ -21,7 +21,7 @@ class ApiController extends Controller
 
     public function getPost()
     {
-        $data = Post::orderBy('id', 'DESC')->limit(2)->get();
+        $data = Post::where('public', 1)->orderBy('id', 'DESC')->limit(2)->get();
 
         return response()->json($data);
     }
