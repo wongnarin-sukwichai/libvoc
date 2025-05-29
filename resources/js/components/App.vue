@@ -249,7 +249,6 @@ export default {
         return {
             library: "img/library.png",
             banner: "img/banner.jpg",
-            user: "",
             show: false,
             showNav: false,
         };
